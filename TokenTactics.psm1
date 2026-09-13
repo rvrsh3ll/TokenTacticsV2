@@ -24,7 +24,7 @@ if ( $OutputMessages ) {
 
 # Load the .ps1 scripts
 #$scripts = @(Get-ChildItem -Path $PSScriptRoot\*.ps1 -ErrorAction SilentlyContinue)
-$scripts = @(Get-ChildItem -Path $PSScriptRoot\modules\*.ps1 -ErrorAction SilentlyContinue)
+$scripts = @(Get-ChildItem -Path $PSScriptRoot\modules\*.ps1 -ErrorAction SilentlyContinue | Sort-Object -Property Name)
 $c = 0
 foreach ($script in $scripts) {
     if ( $OutputMessages ) {
@@ -42,14 +42,24 @@ $functions = @(
     "ConvertFrom-JWTtoken"
     "ConvertTo-PEMPrivateKey"
     "Get-EntraIDAuthorizationCode"
-    "Get-EntraIDToken"
+    "Get-EntraIDFido2Challenge"
+    "Get-EntraIDTokenFromCertificate"
+    "Get-EntraIDTokenFromClientSecret"
+    "Get-EntraIDTokenFromDeviceCode"
+    "Get-EntraIDTokenFromFederatedCredential"
+    "Get-EntraIDTokenFromGitHubActions"
+    "Get-EntraIDTokenFromAzureArcManagedIdentity"
+    "Get-EntraIDTokenOnBehalfOf"
     "Get-EntraIDTokenFromAuthorizationCode"
     "Get-EntraIDTokenFromCookie"
     "Get-EntraIDTokenFromESTSCookie"
+    "Get-EntraIDTokenFromNestedAppAuth"
     "Get-EntraIDTokenFromRefreshTokenCredentialCookie"
     "Get-EntraIDTokenFromSCCAUTHCookie"
     "Get-ForgedUserAgent"
     "Get-TenantID"
+    "Get-WindowsHelloFidoAssertion"
+    "Invoke-EntraIDPasskeyAssertionLogin"
     "Invoke-EntraIDPasskeyLogin"
     "Invoke-RefreshToAzureCoreManagementToken"
     "Invoke-RefreshToAzureKeyVaultToken"
@@ -68,6 +78,14 @@ $functions = @(
     "Invoke-RefreshToOutlookToken"
     "Invoke-RefreshToSharePointToken"
     "Invoke-RefreshToSubstrateToken"
+    "Invoke-RefreshToYammerToken"
+    "New-EntraIDUserHandle"
+    "New-TPMCertificate"
+    "New-EntraIDImplicitAuthorizationUrl"
+    "ConvertFrom-EntraIDImplicitRedirect"
+    "New-EntraIDFederatedSigningCertificate"
+    "New-EntraIDFederatedIssuerMetadata"
+    "New-EntraIDFederatedClientAssertion"
 )
 
 $c = 0
@@ -99,11 +117,42 @@ New-Alias -Name RefreshTo-YammerToken -Value Invoke-RefreshToYammerToken
 New-Alias -Name RefreshTo-AzureStorageToken -Value Invoke-RefreshToAzureStorageToken
 New-Alias -Name RefreshTo-AzureKeyVaultToken -Value Invoke-RefreshToAzureKeyVaultToken
 New-Alias -Name RefreshTo-DeviceRegistrationToken -Value Invoke-RefreshToDeviceRegistrationToken
-New-Alias -Name Get-AzureToken -Value Get-EntraIDToken
+New-Alias -Name Get-EntraIDToken -Value Get-EntraIDTokenFromDeviceCode
+New-Alias -Name Get-AzureToken -Value Get-EntraIDTokenFromDeviceCode
 New-Alias -Name Get-AzureTokenFromESTSCookie -Value Get-EntraIDTokenFromESTSCookie
 New-Alias -Name Get-AzureTokenFromAuthorizationCode -Value Get-EntraIDTokenFromAuthorizationCode
 New-Alias -Name Get-AzureAuthorizationCode -Value Get-EntraIDAuthorizationCode
 New-Alias -Name Get-AzureTokenFromCookie -Value Get-EntraIDTokenFromCookie
 New-Alias -Name Get-AzureTokenFromRefreshTokenCredentialCookie -Value Get-EntraIDTokenFromRefreshTokenCredentialCookie
 
-Export-ModuleMember -Alias * -Function *
+$aliases = @(
+    "Parse-JWTtoken"
+    "Forge-UserAgent"
+    "RefreshTo-SubstrateToken"
+    "RefreshTo-MSManageToken"
+    "RefreshTo-MSTeamsToken"
+    "RefreshTo-OfficeManagementToken"
+    "RefreshTo-OutlookToken"
+    "RefreshTo-MSGraphToken"
+    "RefreshTo-GraphToken"
+    "RefreshTo-OfficeAppsToken"
+    "RefreshTo-AzureCoreManagementToken"
+    "RefreshTo-AzureManagementToken"
+    "RefreshTo-MAMToken"
+    "RefreshTo-DODMSGraphToken"
+    "RefreshTo-SharePointToken"
+    "RefreshTo-OneDriveToken"
+    "RefreshTo-YammerToken"
+    "RefreshTo-AzureStorageToken"
+    "RefreshTo-AzureKeyVaultToken"
+    "RefreshTo-DeviceRegistrationToken"
+    "Get-EntraIDToken"
+    "Get-AzureToken"
+    "Get-AzureTokenFromESTSCookie"
+    "Get-AzureTokenFromAuthorizationCode"
+    "Get-AzureAuthorizationCode"
+    "Get-AzureTokenFromCookie"
+    "Get-AzureTokenFromRefreshTokenCredentialCookie"
+)
+
+Export-ModuleMember -Alias $aliases
